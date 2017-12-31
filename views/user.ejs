@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang=''>
+<head>
+ <meta charset='utf-8'>
+ <meta http-equiv="X-UA-Compatible" content="IE=edge">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.css"></script>
+ <link rel="stylesheet" href="/css/styles.css">
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+ <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+ <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+ <script src="/js/script.js"></script>
+ <title>MAP</title>
+ <script>
+    function deleteUser(btn) {
+        btn.parentNode.parentNode.className = "selected";
+        var uid = $("tr.selected td:first").html();
+
+        $.ajax({
+            dataType: 'text',
+            type: 'DELETE',
+            url: '/user',
+            data: {
+                uid: uid
+            },
+            error: function (res) {
+                btn.parentNode.parentNode.className = "";
+            },
+            success: function (res) {
+                
+            }
+        });
+
+
+    }
+
+    function deleteAll() {
+        $.ajax({
+            url: '/cart',
+            type: 'DELETE',
+            success: function (res) {
+                // Do something with the result
+            }
+        });
+    }
+    
+</script>
+</head>
+<body>
+  <div id='cssmenu'>
+   <div class="logo">
+    <img src="images/logo.png" alt="Paris">
+    <p>MAP GPS CART SMART</p>
+  </div>
+  <ul>
+    <li><a href='/'><span>Map</span></a></li>
+   <li><a href='/user'><span>User</span></a></li>
+   <li><a href='/devices'><span>Device</span></a></li>
+   <li><a>    <div class="input-group">
+      <input type="text" class="form-control" placeholder="Search for..." aria-label="Search for...">
+            <span class="input-group-btn">
+        <button class="btn btn-secondary" type="button">search!</button>
+      </span>
+    </div></a></li>
+</ul>
+</div>
+<% if (typeof messages !== 'undefined') {%>
+    <div class="alert alert-success">
+        <p>
+            <%= messages %>
+        </p>
+    </div>
+    <% } %>
+<div id='bodyconten'>
+    <div class="component">
+    <div class="content">
+     <ul class="nav nav-tabs">
+       <li class="active"><a data-toggle="tab" href="#menu1">User List</a></li>
+       <li><a data-toggle="tab" href="#menu2">Register User</a></li>
+     </ul>
+       <div class="tab-content">
+       <div id="menu1" class="tab-pane fade in active">
+        <table class="table table-hover" id="table">
+            <thead>
+                <tr>
+                    <th>UID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (typeof data !== 'undefined') {%>
+                    <%for(var i=0; i < data.length; i++) {  %>
+                        <tr>
+                            <td>
+                                <%= data[i].uid %>
+                            </td>
+                            <td>
+                                <%= data[i].displayName%>
+                            </td>
+                            <td>
+                                <%= data[i].email %>
+                            </td>
+                            <td>
+                                <button class="btn btn-danger " onclick="deleteUser(this)">Delete</button>
+                            </td>
+                        </tr>
+                        <% } %>
+                            <% } %>
+            </tbody>
+        </table>
+   </div>
+       <div id="menu2" class="tab-pane fade">
+        <form action="/user" method="post">
+            <div class="form-group">
+                <label>Name</label>
+                <input type="text" class="form-control" name="name">
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="text" class="form-control" name="email">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" class="form-control" name="password">
+            </div>
+            <button type="submit" class="btn btn-warning btn-lg">Submit</button>
+        </form>
+   </div>
+   </div>
+   </div>
+   
+   </div>
+</body>
+</html>
+

@@ -1,0 +1,72 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <title>GPS Management</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+    <script>
+        function addToCard(btn) {
+            btn.parentNode.parentNode.className = "selected";
+            var id = $("tr.selected td:first").html();
+
+            $.ajax({
+                dataType: 'text',
+                type: 'POST',
+                url: '/cart',
+                data: {
+                    productId: id
+                },
+                error: function (res) {
+                    btn.parentNode.parentNode.className = "";
+                },
+                success: function (res) {
+                    $("tr.selected td:nth-child(5)").attr('id', 'qty');
+                    // Do something with the result
+                    var json = JSON.parse(res);
+                    document.getElementById("qty").innerHTML = json[id].qty;
+                    console.log(json);
+                    $("tr.selected td:nth-child(5)").attr('id', '');
+                    btn.parentNode.parentNode.className = "";
+                }
+            });
+
+
+        }
+
+        function deleteAll() {
+            $.ajax({
+                url: '/cart',
+                type: 'DELETE',
+                success: function (res) {
+                    // Do something with the result
+                }
+            });
+        }
+    </script>
+</head>
+
+<body>
+    <div class="generic-container">
+        <div class="panel-heading text-center">
+            <span class="lead">GPS Management </span>
+        </div>
+        <div class="container">
+            
+
+        <div class="tablecontainer">
+            
+
+            <div class="well">
+                Go to
+                <a href="/user">User List</a>
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+
+</html>
